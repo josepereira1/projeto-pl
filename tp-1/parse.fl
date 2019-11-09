@@ -1,0 +1,278 @@
+%option noyywrap
+%option yylineno 
+
+%{
+    #include <glib.h>
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <string.h>
+
+    int n_page=0; 
+    int n_citacao=0; 
+    int n_autores=0;
+    int n_traducao=0;
+
+    char* autor = NULL;
+    char* citacao = NULL;
+    char* mOfDay = NULL;
+    int flag = 0;
+      
+    int opcao = 0;
+    int msgOfDay = 0;
+
+    FILE* output = NULL;
+    FILE* autor_file_html = NULL;
+
+    GHashTable* htable;
+
+    /*  ADICIONA UMA CITAÇÃO À HTABLE  */
+    void addCIT() {
+        if (autor != NULL && citacao != NULL) {
+            GPtrArray* arr;
+            if ( (arr = g_hash_table_lookup(htable, autor)) == NULL) { // primeira vez a adicionar
+                arr = g_ptr_array_new(); // criar o ArrayList
+                g_hash_table_insert(htable, strdup(autor), arr); // adicionar o ArrayList à Htable
+            }  
+            g_ptr_array_add(arr, strdup(citacao)); // adicionar citacao ao ArrayList
+        } else {
+            perror("ERROR => autor == NULL || citacao == NULL at addCIT()");
+            exit(1);
+        }
+    }
+
+    int indexOfWord(char* str, char* word){ 
+    char *res = strstr(str, word);
+    if (res == NULL) return -1;
+    else return res - str;
+  }
+  
+  /*  NORMALIZA AS ASPAS  */
+    char* normalizaAspas(char* str){
+        str = strdup(str);
+        int index = -6;
+        
+        while( (index = indexOfWord(str, "&quot;")) != -1) { // enquanto houver aspas
+            int len = strlen(str);
+            char* new_str = malloc(sizeof(char)*(len-6+2)); // -6 por causa do &quot; | +2 pq causa do '\0' e \"
+            memcpy(new_str, str, index); // copia a primeira metade
+            memcpy(new_str+index, "\"", 1); // copia as aspas
+            memcpy(new_str+index+1, str+index+6, len-(index+6-1)); // copia segunda metade
+            free(str);
+            str = new_str;
+        }
+        return str;
+    }
+
+
+    void printMsgOfDay() {
+        GList* values = g_hash_table_get_values(htable);
+        guint len = g_list_length (values);
+    
+        // gerar o número aleatório entre => 0 e len da Htable
+        srand(time(NULL));
+        int r = rand() % len;
+
+        GPtrArray* arr = g_list_nth_data (values, r); // 
+
+        // gerar outro número aleatório => 0 e len do ArrayList
+        srand(time(NULL));
+        r = rand() % arr->len;
+
+        char* msg = g_ptr_array_index(arr, r);
+
+        if (opcao == 1) { // HTML
+      
+            fprintf(output, "<br><h1>Mensagem do dia:</h1>");
+            fprintf(output, "<h3>%s</h3>", msg);
+
+        } else { // caso seja para o ficheiro .txt
+
+            FILE* f = fopen("message_of_the_day.txt", "w");
+            fprintf(f, "%s", msg);
+            fclose(f);
+        }
+    }
+
+    void beginHTML(FILE* file, char* title){
+        fprintf(file, "<html>\n\t<head>\n\t\t<meta charset='UTF-8'/>\n\t</head>\n<body>\n<h1>%s</h1>\n<ul>", title);
+    }
+
+    void endHTML(FILE* file){
+        fprintf(file, "</ul></body></html>");
+    }
+  
+%}
+
+CIT       (("* &quot;".*\n)|("*&quot;".*\n)|("* ''&quot;".*\n)("*''&quot;".*\n)|("* ".*\n))
+TRAD      ((": Tradução Literal:".*\n)|(": Tradução:".*\n)|("** Tradução:".*\n))
+
+NCIT      (("* {".*\n)|("* [".*\n)|("* ''[".*\n)|("** Fonte".*\n))
+
+%x META TEXT FIN
+
+%%
+
+<*>"<page>"                          { BEGIN META; n_page++; }
+
+<META>{
+ "<text"                             { BEGIN TEXT; 
+                                     } 
+}
+
+<TEXT>{
+"</text>"|"/>"                      { 
+                                        BEGIN FIN; 
+                                        if (autor_file_html != NULL) {
+                                            endHTML(autor_file_html);
+                                            fclose(autor_file_html);
+                                            autor_file_html = NULL;
+                                        }
+                                        if (autor != NULL) {
+                                            free(autor);
+                                            autor = NULL;
+                                        } 
+                                    }
+\{\{Autor\n\|\ Nome\ +=\ .*\n       { 
+                                        int k;
+                                        for(k=0; yytext[k] != '='; k++);
+                                        int len = strlen(yytext);
+                                        yytext[len-1] = '\0';
+                                        if (strcmp(yytext+k+2, "") != 0) { // apenas caso haja nome
+                                            autor = strdup(yytext+k+2);
+                                            n_autores++;
+
+                                            if (opcao == 1) {
+                                                char* ref = malloc((strlen(autor)+6+8)*sizeof(char));
+                                                sprintf(ref,"paginas/%s.html",autor);
+
+                                                autor_file_html = fopen(ref, "w");
+                                                if(autor_file_html != NULL){
+                                                    beginHTML(autor_file_html, autor);
+                                                    fprintf(output, "<li><a href=\"%s\">%s</a></li>", ref, autor);
+                                                }
+                                                free(ref);
+                                            }  
+                                       } else autor = NULL;
+                                    }
+
+{NCIT}                              { }
+ 
+{CIT}                               { 
+                                        n_citacao++; 
+                                        citacao = normalizaAspas(yytext);
+                                        if (opcao == 1) { // se for HTML
+                                            if(autor != NULL && autor_file_html != NULL){
+                                                fprintf(autor_file_html, "<br><br>%s<br>", citacao);
+                                                addCIT();
+                                            }
+                                        } else { // se for para o ficheiro
+                                            if (autor == NULL) 
+                                                fprintf(output, "\n\n%s - autor desconecido\n", citacao); 
+                                            else { 
+                                                fprintf(output, "\n\n%s - %s\n", citacao, autor);
+                                                addCIT();
+                                            }
+                                        }
+                                       
+                                       
+                                        if (citacao != NULL) {
+                                            free(citacao);
+                                            citacao = NULL;
+                                        }
+                                    }
+ 
+{TRAD}                              { 
+                                        /*fprintf(output, "%s\n", normalizaAspas(yytext)); n_traducao++;*/ 
+                                        if(opcao == 1){ // se for HTML
+                                            if(autor != NULL && autor_file_html != NULL)
+                                                fprintf(autor_file_html, "%s", normalizaAspas(yytext));
+                                        }else{
+                                            fprintf(output, "%s\n", normalizaAspas(yytext));
+                                        }
+                                        n_traducao++;
+                                    }
+
+}
+
+<FIN>{
+}
+
+<*>.|\n                              {}
+
+
+%%
+
+int main(int argc, char* argv[]) {
+
+    htable = g_hash_table_new(g_str_hash, g_str_equal);
+
+    int i;
+
+    if (argc == 2 && strcmp(argv[1], "help") == 0) {
+        printf("=>[GERAR PÁGINA HTML | OUTPUT_FILE=index.html] => ./parse -h input_file.xml\n");
+        printf("=>[PROCESSAR PARA FICHEIRO TXT | OUTPUT_FILE=output.txt] => ./parse -n input_file.xml\n");
+        printf("=>[GERAR MENSAGEM DO DIA | OUTPUT_FILE=message_of_the_day.txt] => ./parse -m input_file.xml\n");
+        exit(1);
+    }
+
+    if (argc < 3) {
+        perror("ERROR => não foi especificado(s) ficheiro(s) de input\ndigite <parse help>\n");
+        exit(1);
+    }
+
+    if (strcmp(argv[1], "-h") == 0) {
+        opcao = 1;
+        msgOfDay = 1;
+        output = fopen("index.html", "w");
+        i = 2;
+        beginHTML(output, "AUTORES:");
+        system("rm -f -r paginas/");
+        system("mkdir paginas/");
+
+    } else if (strcmp(argv[1], "-m") == 0) {
+        msgOfDay = 1;
+        output = fopen("output.txt", "w");
+        i = 2;
+
+    } else if (strcmp(argv[1], "-n") == 0) {
+        output = fopen("output.txt", "w");
+        i = 2;
+
+    } else {
+        perror("ERROR => argumentos não reconhecidos\ndigite <parse help>\n");
+        exit(1);
+    }
+
+    for( ; i<argc; i++){
+        yyin=fopen(argv[i], "r");
+        yylex();
+        fclose(yyin);
+    }
+
+    if (opcao == 1) { // se for HTML
+        fprintf(output, "<br><h1>Estatística:</h1>");
+        fprintf(output, "<br><li>número de páginas => %d</li>", n_page);
+        fprintf(output, "<br><li>número de citações => %d</li>", n_citacao);
+        fprintf(output, "<br><li>número de autores => %d</li>", n_autores);
+        fprintf(output, "<br><li>número de traduções => %d</li>", n_traducao);
+
+    } else {
+        fprintf(output, "\n\nEstatística:\n");
+        fprintf(output, "\nnúmero de páginas => %d\n", n_page);
+        fprintf(output, "\nnúmero de citações => %d\n", n_citacao);
+        fprintf(output, "\nnúmero de autores => %d\n", n_autores);
+        fprintf(output, "\nnúmero de traduções => %d\n", n_traducao);
+    }
+
+    if (msgOfDay == 1) { // tem que ser antes de fechar o HTML
+        printMsgOfDay();
+    }
+
+    if (opcao == 1) {
+        endHTML(output);
+    } 
+
+    fclose(output);
+
+    return 0;
+}

@@ -1,0 +1,15 @@
+%language PT EN
+%baselang EN
+%inv NT BT
+
+animal
+PT animal
+BT Life
+
+cat
+PT gato
+BT animal
+
+dog
+PT cao
+BT animal

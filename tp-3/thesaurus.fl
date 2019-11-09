@@ -1,0 +1,29 @@
+%{
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+%}
+
+%option noyywrap
+
+%%
+
+#.*\n 						{}
+
+\n\n                        {return NEWLINE;}                         
+
+\%language\ 				{return LANG;}
+\%baselang\ 				{return BASELANG;}
+\%inv\ 						{return INV;}
+                          
+
+[A-Z]+						{yylval.flag = strdup(yytext); return FLAG;}
+
+[A-Za-z\,1-9\_\,çãõéèáàóòê]+			    	{yylval.texto = strdup(yytext);return TXT;}
+
+[\ \t\n]					{}
+
+. 							{}
+
+%%

@@ -1,0 +1,4 @@
+1;José;20;braga
+2;Ricardo;22;porto
+3;Sofia;20;Lisboa
+

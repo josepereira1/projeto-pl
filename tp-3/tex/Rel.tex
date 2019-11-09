@@ -1,0 +1,530 @@
+\documentclass[11pt,a4paper]{report}%especifica o tipo de documento que tenciona escrever: carta, artigo, relatório... neste caso é um relatório
+% [11pt,a4paper] Define o tamanho principal das letras do documento. caso não especifique uma delas, é assumido 10pt
+% a4paper -- Define o tamanho do papel.
+\usepackage{float}
+\usepackage[portuges]{babel}%Babel -- irá activar automaticamente as regras apropriadas de hifenização para a língua todo o
+                                   %-- o texto gerado é automaticamente traduzido para Português.
+                                   %  Por exemplo, “chapter” irá passar a “capítulo”, “table of contents” a “conteúdo”.
+                                   % portuges -- específica para o Português.
+\usepackage[utf8]{inputenc} % define o encoding usado texto fonte (input)--usual "utf8" ou "latin1
+
+\usepackage{graphicx} %permite incluir graficos, tabelas, figuras
+\usepackage{url} % para utilizar o comando \url{}
+\usepackage{enumerate} %permite escolher, nas listas enumeradas, se os iems sao marcados com letras ou numeros-romanos em vez de numeracao normal
+
+%\usepackage{apalike} % gerar biliografia no estilo 'named' (apalike)
+
+\usepackage{color} % Para escrever em cores
+
+\usepackage{multirow} %tabelas com multilinhas
+\usepackage{array} %formatação especial de tabelas em array
+
+\usepackage[pdftex]{hyperref} % transformar as referências internas do seu documento em hiper-ligações.
+
+%Exemplos de fontes -- nao e vulgar mudar o tipo de fonte
+%\usepackage{tgbonum} % Fonte de letra: TEX Gyre Bonum
+%\usepackage{lmodern} % Fonte de letra: Latin Modern Sans Serif
+%\usepackage{helvet}  % Fonte de letra: Helvetica
+%\usepackage{charter} % Fonte de letra:Charter
+
+\definecolor{saddlebrown}{rgb}{0.55, 0.27, 0.07} % para definir uma nova cor, neste caso 'saddlebrown'
+
+\usepackage{listings}  % para utilizar blocos de texto verbatim no estilo 'listings'
+%paramerização mais vulgar dos blocos LISTING - GENERAL
+\lstset{
+	basicstyle=\small, %o tamanho das fontes que são usadas para o código
+	numbers=left, % onde colocar a numeração da linha
+	numberstyle=\tiny, %o tamanho das fontes que são usadas para a numeração da linha
+	numbersep=5pt, %distancia entre a numeração da linha e o codigo
+	breaklines=true, %define quebra automática de linha
+    frame=tB,  % caixa a volta do codigo
+	mathescape=true, %habilita o modo matemático
+	escapeinside={(*@}{@*)} % se escrever isto  aceita tudo o que esta dentro das marcas e nao altera
+}
+%
+%\lstset{ %
+%	language=Java,							% choose the language of the code
+%	basicstyle=\ttfamily\footnotesize,		% the size of the fonts that are used for the code
+%	keywordstyle=\bfseries,					% set the keyword style
+%	%numbers=left,							% where to put the line-numbers
+%	numberstyle=\scriptsize,				% the size of the fonts that are used for the line-numbers
+%	stepnumber=2,							% the step between two line-numbers. If it's 1 each line
+%											% will be numbered
+%	numbersep=5pt,							% how far the line-numbers are from the code
+%	backgroundcolor=\color{white},			% choose the background color. You must add \usepackage{color}
+%	showspaces=false,						% show spaces adding particular underscores
+%	showstringspaces=false,					% underline spaces within strings
+%	showtabs=false,							% show tabs within strings adding particular underscores
+%	frame=none,								% adds a frame around the code
+%	%abovecaptionskip=-.8em,
+%	%belowcaptionskip=.7em,
+%	tabsize=2,								% sets default tabsize to 2 spaces
+%	captionpos=b,							% sets the caption-position to bottom
+%	breaklines=true,						% sets automatic line breaking
+%	breakatwhitespace=false,				% sets if automatic breaks should only happen at whitespace
+%	title=\lstname,							% show the filename of files included with \lstinputlisting;
+%											% also try caption instead of title
+%	escapeinside={\%*}{*)},					% if you want to add a comment within your code
+%	morekeywords={*,...}					% if you want to add more keywords to the set
+%}
+
+\usepackage{xspace} % deteta se a seguir a palavra tem uma palavra ou um sinal de pontuaçao se tiver uma palavra da espaço, se for um sinal de pontuaçao nao da espaço
+
+\parindent=0pt %espaço a deixar para fazer a  indentação da primeira linha após um parágrafo
+\parskip=2pt % espaço entre o parágrafo e o texto anterior
+
+\setlength{\oddsidemargin}{-1cm} %espaço entre o texto e a margem
+\setlength{\textwidth}{18cm} %Comprimento do texto na pagina
+\setlength{\headsep}{-1cm} %espaço entre o texto e o cabeçalho
+\setlength{\textheight}{23cm} %altura do texto na pagina
+
+% comando '\def' usado para definir abreviatura (macros)
+% o primeiro argumento é o nome do novo comando e o segundo entre chavetas é o texto original, ou sequência de controle, para que expande
+\def\darius{\textsf{Darius}\xspace}
+\def\antlr{\texttt{AnTLR}\xspace}
+\def\pe{\emph{Publicação Eletrónica}\xspace}
+\def\titulo#1{\section{#1}}    %no corpo do documento usa-se na forma '\titulo{MEU TITULO}'
+\def\super#1{{\em Supervisor: #1}\\ }
+\def\area#1{{\em \'{A}rea: #1}\\[0.2cm]}
+\def\resumo{\underline{Resumo}:\\ }
+
+%\input{LPgeneralDefintions} %permite ler de um ficheiro de texto externo mais definições
+
+\title{Processamento de Linguagens (3º ano de Curso)\\
+       \textbf{Trabalho Prático 3}\\ Relatório de Desenvolvimento
+       } %Titulo do documento
+%\title{Um Exemplo de Artigo em \LaTeX}
+\author{José Pereira\\ (a82880@alunos.uminho.pt) \and Ricardo Petronilho\\ (a81744@alunos.uminho.pt)
+       } %autores do documento
+\date{\today} %data
+
+\begin{document} % corpo do documento
+\maketitle % apresentar titulo, autor e data
+
+\begin{abstract}  % resumo do documento
+O projeto elaborado na Unidade Curricular de Processamento de Linguagens do Mestrado integrado em Engenharia Informática da Universidade do Minho, tem como principal objetivo o processamento de informação contida em ficheiros do tipo Biblio Thesaurus, utilizando para isso a ferramenta \emph{flex + yacc}.
+\end{abstract}
+
+\tableofcontents % Insere a tabela de indice
+%\listoffigures % Insere a tabela de indice figuras
+%\listoftables % Insere a tabela de indice tabelas
+
+\chapter{Introdução} \label{chap:intro} %referência cruzada
+
+Na unidade curricular de Processamento de Linguagens, do Mestrado integrado em Engenharia Informática da Universidade do Minho, foi proposta a elaboração do exerício três do enunciado fornecido pela equipa docente. \\\\O objetivo central é filtrar a informação mais importante de um ficheiro em formato \emph{thesaurus ISO 2788 (T2788)}, utilizando as ferramentas flex + yacc.\\\\
+Deste modo, a informação contida nos ficheiros referidos anteriormente, começa com metadados e um conjunto de conceitos, sendo que, cada um destes, contém ainda, um representante na linguagem base, traduções noutras línguas e ligações a outros conceitos.\\\\
+Deste modo, os objetivos deste projeto são a especificação da gramática da linguagem de entrada,  desenvolver um reconhecedor léxico e sintático para essa linguagem utilizando as ferramentas flex + yacc, já referidas anteriormente e por fim gerar uma página \emph{HTML} com a informação recolhida, de forma organizada.
+
+\chapter{Concepção/desenho da Resolução}
+
+\section{Gramática}
+
+
+\begin{center}
+\begin{tabular}{ |c| } 
+ \hline
+Z = .F\$\\
+\hline
+F = .L LB I listaC\\
+L = .LANG ListaL\\
+ListaL = .FLAG ListaL\\
+ListaL = .        |\\
+LB = .BASELANG ListaLB\\
+ListaLB = FLAG ListaLB\\
+ListaLB =         |\\
+I = .INV FLAG FLAG\\
+ListaC = C ListaC\\
+ListaC = .        |\\
+C = .listaD\\
+listaD = .D listaD\\
+D = FLAG TXT\\
+D = TXT\\
+\hline
+\end{tabular}
+\caption{\label{tab:table-name}\\Tabela da gramática.}
+\end{center}
+
+De seguida apresenta-se uma lengenda para facilitar a leitura da tabela da gramática:
+
+\begin{itemize}
+  \item Z = estado inicial
+  \item \$ = fim do ficheiro
+  \item F = ficheiro
+  \item L = linguagens
+  \item LB = linguagens base
+  \item I = relações inversas
+  \item listaC = lista de conceitos
+  \item LANG = token que representa a expressão regular (\%language) para capturar o metadado referente às linguagens
+  \item ListaL = lista de linguagens
+  \item FLAG = representa as palavras usadas para identificar, sendo estas totalmente escritas com letras maiúsculas, como por exemplo \emph{BT, NT, PT, EN, ...}
+  \item BASELANG = token que representa a expressão regular (\%baselang) para capturar o metadado referente às linguagens de base
+  \item listaLB = lista de linguagens de base
+  \item INV = token que representa a expressão regular (\%inv) para capturar o metadado referente às relações inversas
+  \item C = conceito
+  \item listaD = lista de dados
+  \item D = dado, que será simplesmente texto ou texto seguido de flags
+  \item TXT = expressão regular representativa de uma palavra, como por exemplo animal, cat, dog, ...
+  \item --- = representa o caso vazio
+\end{itemize}
+
+A gramática especificada acima, teve como base o exemplo fornecido pela equipa docente no enunciado. \\\\Importante referir que inicialmente a gramática não era exatamente igual à atual, pois foi necessário mudar o estado \emph{C} o qual representa o conceito, anteriormente era definido por \emph{TXT listaD}, onde o TXT, tal como já foi dito representa palavras, pelo que, neste caso seria o termo da linguagem base (\emph{baselang}) do conceito, daí pensar-se inicialmente que deveria estar no estado \emph{C}. \\\\Devido a problemas que surgiram na implementação teve que ser alterado, estando atualmente a ser capturado no estado \emph{D}, ou seja, nos dados do conceito.\\\\
+O estado \emph{I}, que representa as relações inversas é definido por \emph{INV FLAG FLAG}, o que significa que apenas pode capturar duas relações. Como a equipa não tinha a certeza se era possível ocorrem mais do que duas relações inversas, fixou a captura a duas.
+\newpage
+
+\section{Desenvolvimento do reconhecedor léxico - Flex}
+
+A conceção da aplicação baseou-se na grámatica desenvolvida anteriormente, começando-se pelas expressões regulares, capturadas pela ferramenta \emph{flex}.\\\\
+Assim começou-se por identificar as mesmas, começando pelos metadados, dos quais :
+\begin{itemize}
+    \item \%language
+    \item \%baselang 
+    \item \%inv
+\end{itemize}
+
+As expressões identificadas acima, estão associadas respetivamente a LANG, BASELANG e INV, tokens da aplicação \emph{yacc}.\\\\
+De seguida, tal como na gramática a \emph{FLAG} corresponde às palavras identificadoras, como por exemplo: BT, NT, PT, EN, ..., ou seja, siglas, portanto a expressão regular utilizada foi [A-Z]+.\\\\ Do mesmo modo, \emph{TXT}, identificado na gramática, representa palavras, como por exemplo: animal, cat, dog, ..., sendo a expressão regular utilizada a [A-Za-z1-9,\_]+. \\\\Importante referir uma das primeiras falhas do grupo, que não chegou a ficar inteiramente resolvida, devido à aproximação da entrega, pois tal como se pode verificar na expressão regular anterior, ela captura palavras, o que significa que não vai ser possível utilizar a aplicação desenvolvida pela equipa para ficheiros com campos como por exemplo \emph{BT Life being}, apenas será capturado o \emph{Life}.\\Deste modo, a equipa encontrou uma forma de solucionar o problema, que é substituir os espaços pelo caracter \emph{underscore} (\_), sendo que, a equipa admite que não é a melhor solução. Do mesmo modo, segundo o exemplo fornecido pela equipa docente no enunciado, existe a possibilidade de se fazer \emph{NT cat, dog}, onde se encontra o mesmo problema referido anteriormente, sendo que a solução neste caso foi adição da vírgula à expressão regular associada a \emph{TXT} e remoção dos espaços, e desta forma, consegue-se capturar a frase.
+\\\\Por fim, e não menos importante, também é necessário ignorar os comentários e outros caracteres, desta forma, adicionou-se a expressão regular \#.* até ao fim da linha, sendo que os comentários são inicializados por \#, não tendo qualquer processamento associado.
+
+\section{Desenvolvimento do reconhecedor léxico - Yacc}
+
+\subsection{Implementação inicial}
+Analisando a gramática inicialmente definida, começou-se por identificar os tokens existentes, os quais redirecionados do programa \emph{flex}.\\\\De seguida, procedeu-se à criação e associação dos tipos das variáveis definidas no \emph{union} das quais, \emph{flags} e \emph{texto}, sendo respetivamente FLAG e TXT, sendo que todos os outros estados estão associados à variável \emph{texto}.\\\\
+O passo seguinte, passou pela estruturação da gramática, onde para \emph{debug}, se fez prints das capturas.\\\\
+
+\subsection{Guardar a informação em memória}
+De seguida e face aos objetivos a equipa tentou guardar a informação em memória, o que não conseguiu finalizar pois não se conseguiu descobrir o problema. No entanto, apesar de não concluido, a estrutura idealizada e implementada foi de uma árvore, onde não existe limite de \emph{filhos}, para isso contou-se com o auxílio de uma biblioteca definida pelo alunos na Unidade Curricular de Laboratórios de Informática três, denominada por \emph{ArrayList.c}. Ou seja, criou-se um \emph{TAD\_ARRAY\_LIST} chamado de \emph{conceitos} onde os seus elementos são do tipo definido de seguida:
+
+\begin{verbatim}
+    typedef struct node{
+        char* conceito;			//	nome do conceito
+        char* traducao;			//	tradução do conceito
+        char* scopeNote;		//	nota explicativa
+        char* pai;
+        TAD_ARRAY_LIST filhos;	//	filhos, relações inferiores
+    }*NODE;
+\end{verbatim}
+
+Tal como se pode observar acima, um \emph{node} corresponde à informação de um \emph{conceito}, onde o campo \emph{filhos} corresponde aos nós que tem relação superior com este conceito. Ou seja, que o campo \emph{pai} dessa lista de conceitos apelidados de \emph{filhos},  é igual ao campo \emph{conceito} (termo da baselang) deste conceito, tendo-se assim uma estrutura organizada de forma hierárquica. Apesar de a equipa não ter conseguido finalizar este requisito, deixou-se o código até então desenvolvido comentado, para que no futuro se volte a tentar solucionar o problema.
+
+\subsection{Gerar uma página HTML}
+
+Tal como já foi referenciado, não se conseguiu concluir o requisito anterior, pelo que a equipa achava interessante ter utilizado a estrutura definida para esse mesmo requisito para a geração das páginas \emph{HTML}, a qual iria facilitar o processo pois está organizada por níveis.\\\\ No entanto, a equipa após verificar que não conseguiria concluir o segundo requisito, de guardar a informação em memória, pensou numa segunda alternativa, gerar as páginas ao mesmo tempo que se faz a captura, tornando-se um processo fácil.\\\\Deste modo, necessitou-se de guardar algumas variáveis, que por sorte já tinham sido guardadas na tentativa do segundo requisito, como o \emph{conceito} (termo da baselang), que é muito importante, para se criar os ficheiros \emph{.hmtl}, bem como as linguagens,  linguagens base e relações inversas existentes . Assim, quando se captura uma palavra sozinha, estado \emph{dado: TXT} sabe-se que se está perante o ínicio de um conceito, logo, cria-se o ficheiro \emph{HTML}.\\\\De seguida, quando se encontra um \emph{dado: FLAG TXT}, vai se verificar o tipo de \emph{FLAG}, existindo as seguintes possibilidades:
+
+\begin{itemize}
+    \item uma tradução, como por exemplo \emph{PT}, então escreve-se esse texto na página do conceito atual (ficheiro guardado como variável global).
+    \item uma relação superior, como por exemplo \emph{BT nomeConceito} e deste modo precisa-se de fazer um \emph{link} na página \emph{nomeConceito.html} do conceito superior para a página deste conceito atual.
+    \item uma relação inferior, apenas se escreve esse texto na página deste conceito.
+    \item uma scope note, onde se faz o mesmo que a anterior.
+\end{itemize}
+
+\chapter{Utilização, Codificação e Testes}
+
+O grupo definiu uma \emph{makefile}, que compila e corre o programa desenvolvido em flex+yacc. Também do mesmo modo, a \emph{makefile} está preparada para instalar e desinstalar o programa.\\\\
+Os testes realizados para verficação da resolução de cada problema foram por observações dos resultados no terminal, que ainda são possíveis verificar e também através de exemplos gerados pela equipa.
+
+\chapter{Conclusão}
+Em suma, os objetivos inicialmente propostos não foram totalmente cumpridos como foi referido ao longo do relatório, dos quais, capturar frases com palavras separadas por espaços e guardar a informação em memória, os restantes, como fazer a gramática, capturar a informação e gerar páginas \emph{HTML} organizadas, foram conluídos.
+\\\\A análise do ficheiro para encontrar os padrões necessários, foi importante para se conseguir capturar a informação necessária.
+\\\\Em relação ao requisito de capturar frases, a solução, apesar de não ser a melhor, encontrada foi a substituição dos espaços por \emph{underscore} e no caso de listagem de relações inferiores separadas por vírgula, remover os mesmos. Sendo que, obviamente a equipa sabe que não é a melhor solução, mas a mais funcional até ao momento, no entanto, pertende-se resolver este mesmo problema no futuro.
+\\\\ Importante referir também, que apesar de não se ter concluido o requisito dois, de guardar a informação em memória, se definiu a estrutura que a equipa achou mais adequada para guardar a mesma de forma hierárquica e organizada, e também se deixou comentado o código definido que apesar de não completamente funcional, se pertende melhorar em medida de trabalho futuro, para se conseguir atingir esse mesmo objetivo.\\\\
+Por fim, apesar de alguns objetivos, não terem sido concluidos com sucesso, o grupo acha que os conseguidos, tem um bom resultado final.
+\appendix % apendice
+\chapter{Código do Programa Flex}
+
+Lista-se a seguir o CÓDIGO feito em flex:
+\begin{verbatim}
+
+%{
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+%}
+
+%option noyywrap
+
+%%
+
+#.*\n 						{}                         
+
+\%language\ 				{return LANG;}
+\%baselang\ 				{return BASELANG;}
+\%inv\ 						{return INV;}
+                          
+
+[A-Z]+						{yylval.flag = strdup(yytext); return FLAG;}
+
+[A-Za-z\,1-9\_\,]+			{yylval.texto = strdup(yytext);return TXT;}
+
+[\ \t\n]					{}
+
+. 							{}
+
+%%
+
+\end{verbatim}
+
+\chapter{Código do Programa Yacc}
+
+Lista-se a seguir o CÓDIGO feito em yacc, pelo que a equipa recomenda consultar o ficheiro original, pois o mesmo é de grande dimensões para ser apresentado no relatório:
+\begin{verbatim}
+%{
+	#define _GNU_SOURCE 
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include "ArrayList.h"
+	int yylex();
+	void yyerror(char *s);
+
+	typedef struct node{
+		char* conceito;			//	nome do conceito
+		char* traducao;			//	tradução do conceito
+		char* scopeNote;		//	nota explicativa
+		char* pai;
+		TAD_ARRAY_LIST filhos;	//	filhos, relações inferiores
+	}*NODE;
+
+	char* tmpTraducoes[10];
+	int indexTraducoes = 0;
+	char* tmpPai;
+	char* tmpFilho;
+	
+	TAD_ARRAY_LIST conceitos;
+
+	char* conceito;
+	char* traducao;
+	char* scopeNote;
+	char* pai;
+	char* filho;
+
+	FILE* file;
+	char* ficheiro_atual;
+
+	void print(TAD_ARRAY_LIST lista){
+		if(getArraySize(lista) != 0){
+			for(int i = 0; i < getArraySize(lista); i++){
+				
+				NODE node = getElem(lista, i);
+				if(node != NULL){
+					printf("conceito:%s\n", node->conceito);
+					printf("tradução:%s\n", node->traducao);
+					
+					if(node->filhos != NULL){
+						printf("------------------ filhos ------------------\n");
+						print(node->filhos);
+						printf("---------------------------------------------\n");
+					}
+				}
+			}
+		}
+	}
+
+	//	procura pelo pai e adiciona ao filho do mesmo
+	int adicionarNode(TAD_ARRAY_LIST lista, NODE node){
+		
+		if(lista == NULL || node == NULL){
+			perror("ERRO: a lista está a NULL!");
+			exit(-1);
+		}
+
+		for(int i = 0; i < getArraySize(lista) ; i++){
+			
+			NODE nodeTmp = (NODE) getElem(lista, i);
+			
+			if(nodeTmp == NULL){
+				perror("ERRO: nodeTmp está a NULL!");
+				exit(-1);
+			}
+			
+			if(strcmp(nodeTmp->conceito, node->pai) == 0){
+				addElem(nodeTmp->filhos, node);
+				return 1;
+			}
+			else{
+				adicionarNode(nodeTmp->filhos, node);
+			} 
+		}
+
+		return 0;
+	}
+
+	void beginHTML(FILE* file, char* title){
+        fprintf(file, "<html>\n\t<head>\n\t\t<meta charset='UTF-8'/>\n\t</head>\n<body>\n<h1>%s</h1>\n<ul>", title);
+    }
+
+	void endHTML(FILE* file){
+    	fprintf(file, "</ul></body></html>");
+	}
+%}
+
+%token LANG BASELANG INV TXT FLAG
+
+%union{
+	char* texto;
+	char* flag;
+}
+
+%type<flag> FLAG
+%type<texto> TXT linguagens listaLinguagens linguagensBase listaLinguagensBase inversas conceitos conceito dado dados
+
+%%
+
+ficheiro: 				linguagens linguagensBase inversas conceitos	    {
+																				printf("pai=%s | filho=%s | traducoes[0] = %s | traducoes[1] = %s\n", tmpPai, tmpFilho, tmpTraducoes[0], tmpTraducoes[1]);
+																				printf("linguagens:%s\nlinguagensBase:%s\ninversas:%s\nconceitos:\n%s\n", $1, $2, $3, $4);
+																			}
+						;
+
+linguagens: 			LANG listaLinguagens  								{asprintf(&$$, "%s", $2);}
+		   				;				
+
+listaLinguagens:		FLAG listaLinguagens                                 {
+																				tmpTraducoes[indexTraducoes] = strdup($1);	//	guardar as traduções existentes
+																				indexTraducoes++;
+																				asprintf(&$$, "%s %s", $1, $2);
+																			}
+						|													{$$="";}
+						;
+
+
+linguagensBase: 		BASELANG listaLinguagensBase  						{asprintf(&$$, "%s", $2);}
+		   				;
+
+listaLinguagensBase:	FLAG listaLinguagensBase                            {asprintf(&$$, "%s %s", $1, $2);}
+						|													{$$="";}
+						;
+
+inversas: 				INV FLAG FLAG									
+																			{	//	assumimos que apenas existem duas possíveis relaçõs
+																				tmpFilho = strdup($2);
+																				tmpPai = strdup($3);
+																				asprintf(&$$, "%s %s", $2, $3);
+																			}
+		   				;
+
+conceitos:				conceito conceitos									{asprintf(&$$, "%s %s", $1, $2);}
+						| 													{$$="";}
+						;
+
+conceito:				dados	 											{
+																				asprintf(&$$, "%s", $1);
+																			}											
+
+dados:					dado dados											{asprintf(&$$, "%s\n%s", $1, $2);}
+						|													{
+																				//	este código foi a tentativa para o requisito 2 de guardar a info em memória
+																				/*NODE tmpNode = (NODE) malloc(sizeof(struct node));
+																				tmpNode->filhos = ARRAY_LIST(10);
+
+																				int flag = 0;
+
+																				if(conceito != NULL){
+																					flag++;
+																					tmpNode->conceito = strdup(conceito);
+																					conceito = NULL;
+																				}
+																				if(traducao != NULL){
+																					
+																					tmpNode->traducao = strdup(traducao);
+																					traducao = NULL;
+																				}
+																				if(scopeNote != NULL){
+																					
+																					tmpNode->scopeNote = strdup(scopeNote);
+																					scopeNote = NULL;
+																				}
+																				if(pai != NULL){
+																					
+																					tmpNode->pai = strdup(pai);
+																					pai = NULL;
+																				}
+
+																				adicionarNode(conceitos, tmpNode);
+																				*/
+																				$$="";
+																			}
+						;
+
+dado:					 FLAG TXT											{
+																				if(strcmp(strdup($1), tmpTraducoes[0]) == 0 || strcmp(strdup($1), tmpTraducoes[1]) == 0){
+																					traducao = strdup($2);
+																					asprintf(&$$, "TRADUÇÃO=[%s %s]", $1, $2);
+																					fprintf(file, "TRADUÇÃO: %s<br>", traducao);
+																				}else if(strcmp(strdup($1), tmpPai) == 0){
+																					asprintf(&$$, "PAI=[%s %s]", $1, $2);
+																					pai = strdup($2);
+																					
+																					//	HTML -------------------------------------
+																					fprintf(file, "RELAÇÃO INVERSA SUPERIOR: %s<br>", pai);
+																					char* ref1 = malloc(((strlen($2)+6+8)*sizeof(char)));
+																					char* ref2 = malloc((strlen($2)+6*sizeof(char)));
+                                                									sprintf(ref1,"paginas/%s.html",$2);
+                                                									sprintf(ref2,"%s.html",conceito);
+																					FILE* tmpFile = fopen(ref1, "a");
+																					fprintf(tmpFile, "<a href=\"%s\">%s</a><br>", ref2, conceito);
+																					//	HTML -------------------------------------
+																				
+																				}else if(strcmp(strdup($1), tmpFilho) == 0){
+																					asprintf(&$$, "FILHO=[%s %s]", $1, $2);
+																					filho = strdup($2);
+																					fprintf(file, "RELAÇÃO INVERSA INFERIOR: %s<br>", filho);
+																				}else if(strcmp(strdup($1), "SN") == 0){
+																					scopeNote = strdup($2);
+																					asprintf(&$$, "StickNote=[%s %s]", $1, $2);
+																					fprintf(file, "NOTA EXPLICATIVA: %s<br>", scopeNote);
+																				}
+																			}
+						| TXT                                               {
+																				//	HTML -------------------------------------
+																				char* ref = malloc(((strlen($1)+6+8)*sizeof(char)));
+                                                								sprintf(ref,"paginas/%s.html",$1);
+																				file = fopen(ref, "w");
+																				beginHTML(file, strdup($1));
+																				//	HTML -------------------------------------
+
+																				conceito = strdup($1);
+																				asprintf(&$$, "|%s|", $1);
+																			}
+						;
+
+%%
+
+#include "lex.yy.c"
+
+void yyerror(char *s){
+	fprintf(stderr,"Erro:%sLine:%d\n",s, yylineno);
+}
+
+int main(){
+
+	system("rm -f -r paginas/");
+    system("mkdir paginas/");
+    system("rm -r *.html");
+
+	file = fopen("index.html", "w");
+
+	beginHTML(file, "Thesaurus");
+
+	fprintf(file, "<a href=\"paginas/Life.html\">Life</a>");
+
+	//	este código foi a tentativa para o requisito 2 de guardar a info em memória
+	/*
+	conceitos = ARRAY_LIST(10);
+	
+	NODE novoNo = (NODE)malloc(sizeof(struct node));
+	novoNo->conceito = "Life";
+	novoNo->traducao = "life";
+	novoNo->filhos = ARRAY_LIST(10);
+	*/
+
+	file = fopen("paginas/Life.html", "w");
+
+	beginHTML(file, "Life");
+	
+	//addElem(conceitos, novoNo);
+	yyparse();
+}
+\end{verbatim}
+\end{document} 
+

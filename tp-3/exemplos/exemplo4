@@ -1,0 +1,55 @@
+%language PT EN
+%baselang EN
+%inv NT BT
+
+animal
+PT animal
+NT cat,dog,cow,fish,ant
+NT camel
+BT Life
+
+#comentário
+
+cat
+PT gato
+BT animal
+SN animal_que_tem_sete_vidas_e_meia 
+
+dog
+PT cão
+BT animal
+SN animal_amigo_do_homem
+
+cow
+PT vaca
+BT animal
+
+fish
+PT peixe
+BT animal
+NT shark
+
+shark
+PT tubarão
+BT fish
+SN animal_muito_perigoso
+
+pitbull
+PT pitbull
+BT dog
+SN animal_muito_perigoso
+
+human
+PT humano
+BT Life
+SN animal_racional
+
+persian
+PT persa
+BT cat
+SN gatos_muito_peludos
+
+ragdoll
+PT ragdoll
+BT cat
+SN raça_rara

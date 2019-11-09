@@ -1,0 +1,11 @@
+.DS_Store
+lex.yy.c
+parse
+*.txt
+!tp-2/testes-gawk/exemplo_1.txt
+!tp-2/testes-gawk/exemplo_2.txt
+tp-2/html/
+*.html
+thesaurus
+y.tab.c
+y.output

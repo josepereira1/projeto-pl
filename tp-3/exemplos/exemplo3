@@ -1,0 +1,18 @@
+%language PT EN
+%baselang EN
+%inv NT BT
+
+animal
+PT animal
+NT cat,dog,cow,fish,ant
+NT camel
+BT Life
+
+# isto é um comentário
+
+cat
+PT gato
+BT animal
+SN animalzinho
+
+# isto é um comentário

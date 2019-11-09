@@ -1,0 +1,16 @@
+%language PT EN
+%baselang EN
+%inv NT BT
+
+animal
+PT animal
+NT cat,dog,cow,fish,ant
+NT camel
+BT Life
+
+#comentário
+
+cat
+PT gato
+BT animal
+SN animal_que_tem_sete_vidas_e_meia 
