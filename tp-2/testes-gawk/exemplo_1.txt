@@ -1,4 +1,0 @@
-0;Ricardo André Gomes Petronilho;20;Braga
-1;José André Martins Pereira;21;Braga
-2;nome3;80;caralho
-3;nome4;54;caralho
